@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escape Room - Ta Dig Ut!</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen active">
+            <div class="start-content">
+                <h1>🔒 ESCAPE ROOM 🔒</h1>
+                <p class="subtitle">Du vaknar instängd i ett övergivet komplex...</p>
+                <p class="description">Lös pussel i 5 rum för att ta dig ut!</p>
+                <button id="start-btn" class="btn-primary">Börja Spelet</button>
+            </div>
+        </div>
+
+        <!-- Room Container -->
+        <div id="room-container" class="screen">
+            <!-- Room Header -->
+            <div class="room-header">
+                <h2 id="room-title">Rum 1: Cellen</h2>
+                <div class="room-progress">
+                    <span>Rum <span id="current-room">1</span> av 5</span>
+                </div>
+            </div>
+
+            <!-- Room Description -->
+            <div id="room-description" class="room-description">
+                <p>Du befinner dig i en mörk cell. Hitta koden till dörrlåset genom att öppna lådorna.</p>
+            </div>
+
+            <!-- Room Content (different for each room) -->
+            <div id="room-content" class="room-content">
+                <!-- Content will be dynamically generated -->
+            </div>
+
+            <!-- Puzzle Status -->
+            <div id="puzzle-status" class="puzzle-status"></div>
+
+            <!-- Next Room Button (hidden until puzzle solved) -->
+            <button id="next-room-btn" class="btn-primary hidden">Gå till nästa rum →</button>
+
+            <!-- Back to Start -->
+            <button id="restart-btn" class="btn-secondary">Starta Om</button>
+        </div>
+
+        <!-- Win Screen -->
+        <div id="win-screen" class="screen">
+            <div class="win-content">
+                <h1>🎉 GRATTIS! 🎉</h1>
+                <p>Du har lyckats fly från komplexet!</p>
+                <p class="escape-time">Tid: <span id="escape-time">00:00</span></p>
+                <button id="play-again-btn" class="btn-primary">Spela Igen</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

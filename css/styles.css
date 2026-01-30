@@ -1,0 +1,464 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: #e0e0e0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.game-container {
+    width: 100%;
+    max-width: 900px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Screen Management */
+.screen {
+    display: none;
+}
+
+.screen.active {
+    display: block;
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Start Screen */
+.start-content {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.start-content h1 {
+    font-size: 3em;
+    margin-bottom: 20px;
+    color: #ff6b6b;
+    text-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.subtitle {
+    font-size: 1.3em;
+    margin-bottom: 10px;
+    color: #a0a0a0;
+}
+
+.description {
+    font-size: 1.1em;
+    margin-bottom: 30px;
+    color: #c0c0c0;
+}
+
+/* Buttons */
+.btn-primary, .btn-secondary {
+    padding: 15px 30px;
+    font-size: 1.1em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    margin: 10px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+    color: white;
+    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 20px rgba(255, 107, 107, 0.6);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: #e0e0e0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Room Styles */
+.room-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.room-header h2 {
+    color: #ff6b6b;
+    font-size: 1.8em;
+}
+
+.room-progress {
+    color: #a0a0a0;
+    font-size: 0.9em;
+}
+
+.room-description {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    border-left: 4px solid #ff6b6b;
+}
+
+.room-content {
+    min-height: 300px;
+    margin-bottom: 20px;
+}
+
+/* Room 1 - The Cell (Boxes) */
+.boxes-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.box {
+    aspect-ratio: 1;
+    background: linear-gradient(135deg, #2c3e50, #34495e);
+    border: 3px solid #555;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 2em;
+    position: relative;
+    overflow: hidden;
+}
+
+.box:hover {
+    transform: scale(1.05);
+    border-color: #ff6b6b;
+    box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+}
+
+.box.opened {
+    background: linear-gradient(135deg, #27ae60, #2ecc71);
+    border-color: #2ecc71;
+    cursor: default;
+}
+
+.box.opened::before {
+    content: '✓';
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    color: white;
+    font-size: 0.5em;
+}
+
+.box-content {
+    text-align: center;
+    color: white;
+    font-weight: bold;
+}
+
+/* Room 2 - Control Room (Buttons) */
+.buttons-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin: 20px 0;
+    max-width: 500px;
+}
+
+.control-button {
+    padding: 20px;
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    border: 2px solid #2980b9;
+    border-radius: 8px;
+    color: white;
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.control-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(52, 152, 219, 0.6);
+}
+
+.control-button.active {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    border-color: #27ae60;
+}
+
+.control-button.wrong {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    border-color: #c0392b;
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.sequence-hint {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-style: italic;
+}
+
+/* Room 3 - Laboratory (Chemical Mixing) */
+.chemicals-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.chemical {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid #555;
+    border-radius: 10px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.chemical:hover {
+    border-color: #ff6b6b;
+    transform: translateY(-5px);
+}
+
+.chemical.selected {
+    border-color: #2ecc71;
+    background: rgba(46, 204, 113, 0.2);
+}
+
+.chemical-name {
+    font-size: 1.3em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #ff6b6b;
+}
+
+.chemical-hint {
+    font-size: 0.9em;
+    color: #a0a0a0;
+    font-style: italic;
+}
+
+.mix-button {
+    margin-top: 20px;
+    padding: 15px 40px;
+}
+
+.selected-chemicals {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    min-height: 50px;
+}
+
+/* Room 4 - Machine Room (Countdown) */
+.countdown-container {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.countdown-timer {
+    font-size: 4em;
+    color: #ff6b6b;
+    font-weight: bold;
+    text-shadow: 0 0 20px rgba(255, 107, 107, 0.8);
+    margin: 20px 0;
+    font-family: 'Courier New', monospace;
+}
+
+.code-input-container {
+    margin: 30px 0;
+}
+
+.code-input {
+    padding: 15px 20px;
+    font-size: 1.5em;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid #555;
+    border-radius: 8px;
+    color: white;
+    width: 200px;
+    letter-spacing: 5px;
+}
+
+.code-input:focus {
+    outline: none;
+    border-color: #ff6b6b;
+    box-shadow: 0 0 15px rgba(255, 107, 107, 0.5);
+}
+
+.riddle {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    font-size: 1.1em;
+    line-height: 1.6;
+}
+
+/* Room 5 - Exit (Final Puzzle) */
+.final-puzzle {
+    text-align: center;
+    padding: 30px;
+}
+
+.code-display {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    margin: 30px 0;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.code-digit {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid #555;
+    border-radius: 8px;
+    padding: 20px;
+    font-size: 2em;
+    font-weight: bold;
+    color: #ff6b6b;
+}
+
+.code-digit.found {
+    background: rgba(46, 204, 113, 0.3);
+    border-color: #2ecc71;
+    color: #2ecc71;
+}
+
+.hint-box {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+    border-left: 4px solid #ff6b6b;
+}
+
+/* Puzzle Status */
+.puzzle-status {
+    margin: 20px 0;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    min-height: 50px;
+}
+
+.status-message {
+    color: #2ecc71;
+    font-weight: bold;
+}
+
+.status-error {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+/* Win Screen */
+.win-content {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.win-content h1 {
+    font-size: 3em;
+    margin-bottom: 20px;
+    color: #2ecc71;
+    text-shadow: 0 0 20px rgba(46, 204, 113, 0.5);
+}
+
+.escape-time {
+    font-size: 1.5em;
+    margin: 20px 0;
+    color: #a0a0a0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .game-container {
+        padding: 15px;
+    }
+
+    .start-content h1 {
+        font-size: 2em;
+    }
+
+    .room-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .boxes-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .buttons-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .countdown-timer {
+        font-size: 2.5em;
+    }
+
+    .code-display {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

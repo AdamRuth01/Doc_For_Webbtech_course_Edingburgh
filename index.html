@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="sv">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Escape Room - Ta Dig Ut!</title>
+    <title>Escape Room - Get Out!</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -12,9 +12,9 @@
         <div id="start-screen" class="screen active">
             <div class="start-content">
                 <h1>🔒 ESCAPE ROOM 🔒</h1>
-                <p class="subtitle">Du vaknar instängd i ett övergivet komplex...</p>
-                <p class="description">Lös pussel i 5 rum för att ta dig ut!</p>
-                <button id="start-btn" class="btn-primary">Börja Spelet</button>
+                <p class="subtitle">You wake up trapped in an abandoned complex...</p>
+                <p class="description">Solve puzzles in 5 rooms to escape!</p>
+                <button id="start-btn" class="btn-primary">Start Game</button>
             </div>
         </div>
 
@@ -22,15 +22,15 @@
         <div id="room-container" class="screen">
             <!-- Room Header -->
             <div class="room-header">
-                <h2 id="room-title">Rum 1: Cellen</h2>
+                <h2 id="room-title">Room 1: The Cell</h2>
                 <div class="room-progress">
-                    <span>Rum <span id="current-room">1</span> av 5</span>
+                    <span>Room <span id="current-room">1</span> of 5</span>
                 </div>
             </div>
 
             <!-- Room Description -->
             <div id="room-description" class="room-description">
-                <p>Du befinner dig i en mörk cell. Hitta koden till dörrlåset genom att öppna lådorna.</p>
+                <p>You find yourself in a dark cell. Find the door code by opening the boxes.</p>
             </div>
 
             <!-- Room Content (different for each room) -->
@@ -42,19 +42,19 @@
             <div id="puzzle-status" class="puzzle-status"></div>
 
             <!-- Next Room Button (hidden until puzzle solved) -->
-            <button id="next-room-btn" class="btn-primary hidden">Gå till nästa rum →</button>
+            <button id="next-room-btn" class="btn-primary hidden">Go to Next Room →</button>
 
             <!-- Back to Start -->
-            <button id="restart-btn" class="btn-secondary">Starta Om</button>
+            <button id="restart-btn" class="btn-secondary">Restart</button>
         </div>
 
         <!-- Win Screen -->
         <div id="win-screen" class="screen">
             <div class="win-content">
-                <h1>🎉 GRATTIS! 🎉</h1>
-                <p>Du har lyckats fly från komplexet!</p>
-                <p class="escape-time">Tid: <span id="escape-time">00:00</span></p>
-                <button id="play-again-btn" class="btn-primary">Spela Igen</button>
+                <h1>🎉 CONGRATULATIONS! 🎉</h1>
+                <p>You have successfully escaped from the complex!</p>
+                <p class="escape-time">Time: <span id="escape-time">00:00</span></p>
+                <button id="play-again-btn" class="btn-primary">Play Again</button>
             </div>
         </div>
     </div>

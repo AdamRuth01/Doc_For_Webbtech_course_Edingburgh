@@ -4,66 +4,66 @@ const gameState = {
     startTime: null,
     rooms: {
         1: { solved: false, openedBoxes: [] },
-        2: { solved: false, sequence: [], correctSequence: [1, 3, 2, 4] },
+        2: { solved: false, sequence: [], correctSequence: [1, 4, 2, 3] },
         3: { solved: false, selectedChemicals: [], correctCombination: ['A', 'C', 'E'] },
         4: { solved: false, countdown: 60, code: '', correctCode: '7359' },
-        5: { solved: false, foundDigits: [], correctCode: [3, 1, 5, 2, 4] }
+        5: { solved: false, foundDigits: [], correctCode: [7, 1, 3, 3, 5] }
     }
 };
 
 // Room Data
 const roomData = {
     1: {
-        title: 'Rum 1: Cellen',
-        description: 'Du befinner dig i en mörk cell. Hitta koden till dörrlåset genom att öppna lådorna. Varje låda innehåller en siffra.',
+        title: 'Room 1: The Cell',
+        description: 'You find yourself in a dark cell. Find the door code by opening the boxes. Each box contains a digit. Open all three boxes to reveal the 3-digit code.',
         boxes: [
-            { id: 1, number: 4, hint: 'Första siffran: 4' },
-            { id: 2, number: 2, hint: 'Andra siffran: 2' },
-            { id: 3, number: 7, hint: 'Tredje siffran: 7' }
+            { id: 1, number: 4, hint: 'First digit: 4' },
+            { id: 2, number: 2, hint: 'Second digit: 2' },
+            { id: 3, number: 7, hint: 'Third digit: 7' }
         ],
         correctCode: '427'
     },
     2: {
-        title: 'Rum 2: Kontrollrummet',
-        description: 'Du är i kontrollrummet. Aktivera strömmen genom att trycka på knapparna i rätt ordning. Ledtråd: "Börja med den minsta, sedan den största, sedan mitten, och slutligen den fjärde."',
+        title: 'Room 2: Control Room',
+        description: 'You are in the control room. Activate the power by pressing the buttons in the correct order. Hint: "Start with the smallest number (1), then the largest (4), then the middle-left (2), and finally the middle-right (3)."',
         buttons: [
             { id: 1, label: '1' },
             { id: 2, label: '2' },
             { id: 3, label: '3' },
             { id: 4, label: '4' }
         ],
-        correctSequence: [1, 3, 2, 4]
+        correctSequence: [1, 4, 2, 3]
     },
     3: {
-        title: 'Rum 3: Laboratoriet',
-        description: 'I laboratoriet måste du blanda rätt kemikalier. Välj de tre kemikalier som tillsammans bildar en säker kombination. Ledtråd: "Välj de som börjar på A, C och E."',
+        title: 'Room 3: Laboratory',
+        description: 'In the laboratory, you must mix the correct chemicals. Select the three chemicals that together form a safe combination. Hint: "Choose the ones that start with the letters A, C, and E."',
         chemicals: [
-            { id: 'A', name: 'Ammoniak', hint: 'Börjar på A' },
-            { id: 'B', name: 'Bensen', hint: 'Inte rätt' },
-            { id: 'C', name: 'Klor', hint: 'Börjar på C' },
-            { id: 'D', name: 'Diklor', hint: 'Inte rätt' },
-            { id: 'E', name: 'Etanol', hint: 'Börjar på E' },
-            { id: 'F', name: 'Formaldehyd', hint: 'Inte rätt' }
+            { id: 'A', name: 'Ammonia', hint: 'Starts with A' },
+            { id: 'B', name: 'Benzene', hint: 'Not correct' },
+            { id: 'C', name: 'Chlorine', hint: 'Starts with C' },
+            { id: 'D', name: 'Dichloride', hint: 'Not correct' },
+            { id: 'E', name: 'Ethanol', hint: 'Starts with E' },
+            { id: 'F', name: 'Formaldehyde', hint: 'Not correct' }
         ],
         correctCombination: ['A', 'C', 'E']
     },
     4: {
-        title: 'Rum 4: Maskinrummet',
-        description: 'En nedräkning har startat! Lös gåtan för att stoppa den. "Tre siffror efter sju, tre siffror före nio, fem siffror efter tre, nio siffror efter minus sex."',
+        title: 'Room 4: Machine Room',
+        description: 'A countdown has started! Solve the riddle to stop it. Riddle: "The first digit is seven. The second is three (half of six). The third is five. The fourth is nine (three squared)."',
         countdown: 60,
         correctCode: '7359'
     },
     5: {
-        title: 'Rum 5: Utgången',
-        description: 'Sista rummet! Använd allt du har lärt dig. Koden består av 5 siffror. Ledtråd 1: Tredje siffran från rum 1. Ledtråd 2: Första siffran från rum 2. Ledtråd 3: Antal kemikalier från rum 3. Ledtråd 4: Andra siffran från rum 4. Ledtråd 5: Antal rum totalt.',
+        title: 'Room 5: The Exit',
+        description: 'Final room! Use everything you have learned. The code consists of 5 digits. Hint 1: Third digit from Room 1. Hint 2: First digit from Room 2. Hint 3: Number of chemicals selected in Room 3. Hint 4: Second digit from Room 4. Hint 5: Total number of rooms.',
         hints: [
-            'Ledtråd 1: Tredje siffran från rum 1 (7)',
-            'Ledtråd 2: Första siffran från rum 2 (1)',
-            'Ledtråd 3: Antal kemikalier från rum 3 (5)',
-            'Ledtråd 4: Andra siffran från rum 4 (3)',
-            'Ledtråd 5: Antal rum totalt (4)'
+            'Hint 1: Third digit from Room 1 = 7',
+            'Hint 2: First digit from Room 2 = 1',
+            'Hint 3: Number of chemicals from Room 3 = 3',
+            'Hint 4: Second digit from Room 4 = 3',
+            'Hint 5: Total number of rooms = 5'
         ],
-        correctCode: [7, 1, 5, 3, 4]
+        correctCode: [7, 1, 3, 3, 5]
     }
 };
 
@@ -180,7 +180,7 @@ function updateCodeDisplay() {
         return box.number;
     }).join('');
     
-    codeDisplay.innerHTML = `<div class="status-message">Kod: ${code || '___'}</div>`;
+    codeDisplay.innerHTML = `<div class="status-message">Code: ${code || '___'}</div>`;
 }
 
 function checkRoom1Complete() {
@@ -193,7 +193,7 @@ function checkRoom1Complete() {
         if (code === roomData[1].correctCode) {
             gameState.rooms[1].solved = true;
             document.getElementById('puzzle-status').innerHTML = 
-                '<div class="status-message">✓ Korrekt kod! Dörren är öppen!</div>';
+                '<div class="status-message">✓ Correct code! The door is open!</div>';
             document.getElementById('next-room-btn').classList.remove('hidden');
         }
     }
@@ -203,7 +203,7 @@ function checkRoom1Complete() {
 function loadRoom2(container, room) {
     container.innerHTML = `
         <div class="sequence-hint">
-            <p>Tryck på knapparna i rätt ordning för att aktivera strömmen.</p>
+            <p>Press the buttons in the correct order to activate the power.</p>
         </div>
         <div class="buttons-container">
             ${room.buttons.map(btn => `
@@ -243,19 +243,19 @@ function handleButtonClick(btnId, btnElement, room) {
             resetRoom2();
         }, 1000);
         btnElement.classList.add('wrong');
-    } else if (sequence.length === correctSequence.length) {
-        // Complete and correct
-        gameState.rooms[2].solved = true;
-        document.getElementById('puzzle-status').innerHTML = 
-            '<div class="status-message">✓ Strömmen är aktiverad!</div>';
-        document.getElementById('next-room-btn').classList.remove('hidden');
-    }
+        } else if (sequence.length === correctSequence.length) {
+            // Complete and correct
+            gameState.rooms[2].solved = true;
+            document.getElementById('puzzle-status').innerHTML = 
+                '<div class="status-message">✓ Power activated!</div>';
+            document.getElementById('next-room-btn').classList.remove('hidden');
+        }
 }
 
 function updateSequenceDisplay() {
     const display = document.getElementById('sequence-display');
     const sequence = gameState.rooms[2].sequence;
-    display.innerHTML = `<div class="status-message">Sekvens: ${sequence.join(' → ')}</div>`;
+    display.innerHTML = `<div class="status-message">Sequence: ${sequence.join(' → ')}</div>`;
 }
 
 function resetRoom2() {
@@ -265,7 +265,7 @@ function resetRoom2() {
         btn.classList.remove('active', 'wrong');
     });
     document.getElementById('sequence-display').innerHTML = 
-        '<div class="status-error">Fel ordning! Försök igen.</div>';
+        '<div class="status-error">Wrong order! Try again.</div>';
 }
 
 // Room 3: Laboratory - Chemical Mixing
@@ -280,9 +280,9 @@ function loadRoom3(container, room) {
             `).join('')}
         </div>
         <div class="selected-chemicals">
-            <p>Valda kemikalier: <span id="selected-list">Inga valda</span></p>
+            <p>Selected chemicals: <span id="selected-list">None selected</span></p>
         </div>
-        <button class="mix-button btn-primary" id="mix-btn">Blanda Kemikalier</button>
+        <button class="mix-button btn-primary" id="mix-btn">Mix Chemicals</button>
         <div id="mix-result" class="puzzle-status"></div>
     `;
 
@@ -320,7 +320,7 @@ function updateSelectedChemicals() {
     const display = document.getElementById('selected-list');
     
     if (selected.length === 0) {
-        display.textContent = 'Inga valda';
+        display.textContent = 'None selected';
     } else {
         const names = selected.map(id => {
             const chem = roomData[3].chemicals.find(c => c.id === id);
@@ -336,16 +336,16 @@ function mixChemicals(room) {
     const resultDiv = document.getElementById('mix-result');
     
     if (selected.length !== 3) {
-        resultDiv.innerHTML = '<div class="status-error">Du måste välja exakt 3 kemikalier!</div>';
+        resultDiv.innerHTML = '<div class="status-error">You must select exactly 3 chemicals!</div>';
         return;
     }
     
     if (JSON.stringify(selected) === JSON.stringify(correct)) {
         gameState.rooms[3].solved = true;
-        resultDiv.innerHTML = '<div class="status-message">✓ Rätt kombination! Skåpet öppnas!</div>';
+        resultDiv.innerHTML = '<div class="status-message">✓ Correct combination! The cabinet opens!</div>';
         document.getElementById('next-room-btn').classList.remove('hidden');
     } else {
-        resultDiv.innerHTML = '<div class="status-error">Fel kombination! Försök igen.</div>';
+        resultDiv.innerHTML = '<div class="status-error">Wrong combination! Try again.</div>';
         // Reset selection
         gameState.rooms[3].selectedChemicals = [];
         document.querySelectorAll('.chemical').forEach(chem => {
@@ -359,15 +359,15 @@ function mixChemicals(room) {
 function loadRoom4(container, room) {
     container.innerHTML = `
         <div class="riddle">
-            <p><strong>Gåta:</strong> "Tre siffror efter sju, tre siffror före nio, fem siffror efter tre, nio siffror efter minus sex."</p>
+            <p><strong>Riddle:</strong> "The first digit is seven. The second is three (half of six). The third is five. The fourth is nine (three squared)."</p>
         </div>
         <div class="countdown-container">
             <div class="countdown-timer" id="countdown">60</div>
-            <p>Tid kvar innan systemet kraschar!</p>
+            <p>Time remaining before system crashes!</p>
         </div>
         <div class="code-input-container">
-            <input type="text" class="code-input" id="code-input" placeholder="Kod" maxlength="4" pattern="[0-9]*">
-            <button class="btn-primary" id="submit-code-btn" style="margin-top: 15px;">Skicka Kod</button>
+            <input type="text" class="code-input" id="code-input" placeholder="Code" maxlength="4" pattern="[0-9]*">
+            <button class="btn-primary" id="submit-code-btn" style="margin-top: 15px;">Submit Code</button>
         </div>
         <div id="code-result" class="puzzle-status"></div>
     `;
@@ -414,7 +414,7 @@ function startCountdown() {
             clearInterval(timer);
             countdownElement.textContent = '0';
             document.getElementById('code-result').innerHTML = 
-                '<div class="status-error">Tiden är ute! Systemet kraschar... Försök igen!</div>';
+                '<div class="status-error">Time is up! System crashed... Try again!</div>';
             setTimeout(() => {
                 resetRoom4();
             }, 2000);
@@ -428,10 +428,10 @@ function checkCode4(code, room) {
     if (code === room.correctCode) {
         gameState.rooms[4].solved = true;
         gameState.rooms[4].countdown = 0; // Stop countdown
-        resultDiv.innerHTML = '<div class="status-message">✓ Korrekt kod! Nedräkningen stoppad!</div>';
+        resultDiv.innerHTML = '<div class="status-message">✓ Correct code! Countdown stopped!</div>';
         document.getElementById('next-room-btn').classList.remove('hidden');
     } else {
-        resultDiv.innerHTML = '<div class="status-error">Fel kod! Försök igen.</div>';
+        resultDiv.innerHTML = '<div class="status-error">Wrong code! Try again.</div>';
         document.getElementById('code-input').value = '';
     }
 }
@@ -451,7 +451,7 @@ function loadRoom5(container, room) {
     container.innerHTML = `
         <div class="final-puzzle">
             <div class="hint-box">
-                <p><strong>Använd allt du har lärt dig för att hitta koden!</strong></p>
+                <p><strong>Use everything you have learned to find the code!</strong></p>
             </div>
             ${room.hints.map((hint, index) => `
                 <div class="hint-box">
@@ -464,8 +464,8 @@ function loadRoom5(container, room) {
                 `).join('')}
             </div>
             <div class="code-input-container">
-                <input type="text" class="code-input" id="final-code-input" placeholder="Ange 5-siffrig kod" maxlength="5" pattern="[0-9]*">
-                <button class="btn-primary" id="submit-final-code-btn" style="margin-top: 15px;">Skicka Kod</button>
+                <input type="text" class="code-input" id="final-code-input" placeholder="Enter 5-digit code" maxlength="5" pattern="[0-9]*">
+                <button class="btn-primary" id="submit-final-code-btn" style="margin-top: 15px;">Submit Code</button>
             </div>
             <div id="final-result" class="puzzle-status"></div>
         </div>
@@ -493,12 +493,12 @@ function checkFinalCode(code, room) {
     
     if (code === correctCode) {
         gameState.rooms[5].solved = true;
-        resultDiv.innerHTML = '<div class="status-message">✓ Korrekt! Du har flytt från komplexet!</div>';
+        resultDiv.innerHTML = '<div class="status-message">✓ Correct! You have escaped from the complex!</div>';
         setTimeout(() => {
             showWinScreen();
         }, 1500);
     } else {
-        resultDiv.innerHTML = '<div class="status-error">Fel kod! Tänk på ledtrådarna.</div>';
+        resultDiv.innerHTML = '<div class="status-error">Wrong code! Think about the hints.</div>';
         
         // Show which digits are correct
         const digits = code.split('').map(Number);
@@ -538,10 +538,10 @@ function restartGame() {
     gameState.startTime = null;
     gameState.rooms = {
         1: { solved: false, openedBoxes: [] },
-        2: { solved: false, sequence: [], correctSequence: [1, 3, 2, 4] },
+        2: { solved: false, sequence: [], correctSequence: [1, 4, 2, 3] },
         3: { solved: false, selectedChemicals: [], correctCombination: ['A', 'C', 'E'] },
         4: { solved: false, countdown: 60, code: '', correctCode: '7359' },
-        5: { solved: false, foundDigits: [], correctCode: [7, 1, 5, 3, 4] }
+        5: { solved: false, foundDigits: [], correctCode: [7, 1, 3, 3, 5] }
     };
     
     showScreen('start-screen');

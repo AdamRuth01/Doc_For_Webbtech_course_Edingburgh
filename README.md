@@ -176,8 +176,9 @@ project-root/
    - Save changes
 
 2. **Access your site:**
-   - Your site will be available at: `https://adamruth01.github.io/Doc_For_Webbtech_course_Edingburgh/`
-   - Changes may take a few minutes to propagate
+   - Your site will be available at: **https://adamruth01.github.io/Doc_For_Webbtech_course_Edingburgh/**
+   - Changes may take 1-2 minutes to propagate
+   - The site updates automatically when you push changes to the `main` branch
 
 3. **Update and deploy:**
    ```bash

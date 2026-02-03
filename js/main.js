@@ -2,6 +2,7 @@
 const gameState = {
     currentRoom: 1,
     startTime: null,
+    achievements: [],
     rooms: {
         1: { solved: false, openedBoxes: [] },
         2: { solved: false, sequence: [], correctSequence: [1, 4, 2, 3] },
@@ -106,35 +107,67 @@ function loadRoom(roomNumber) {
     gameState.currentRoom = roomNumber;
     const room = roomData[roomNumber];
     
-    // Update header
-    document.getElementById('room-title').textContent = room.title;
-    document.getElementById('current-room').textContent = roomNumber;
-    document.getElementById('room-description').innerHTML = `<p>${room.description}</p>`;
+    // Animate room transition
+    const roomContainer = document.getElementById('room-container');
+    roomContainer.style.opacity = '0';
+    roomContainer.style.transform = 'translateY(20px)';
     
-    // Hide next room button
-    document.getElementById('next-room-btn').classList.add('hidden');
-    document.getElementById('puzzle-status').innerHTML = '';
+    setTimeout(() => {
+        // Update header
+        document.getElementById('room-title').textContent = room.title;
+        document.getElementById('current-room').textContent = roomNumber;
+        document.getElementById('room-description').innerHTML = `<p>${room.description}</p>`;
+        
+        // Update progress bar
+        updateProgressBar();
+        
+        // Hide next room button
+        document.getElementById('next-room-btn').classList.add('hidden');
+        document.getElementById('puzzle-status').innerHTML = '';
 
-    // Load room-specific content
-    const roomContent = document.getElementById('room-content');
+        // Load room-specific content
+        const roomContent = document.getElementById('room-content');
+        
+        switch(roomNumber) {
+            case 1:
+                loadRoom1(roomContent, room);
+                break;
+            case 2:
+                loadRoom2(roomContent, room);
+                break;
+            case 3:
+                loadRoom3(roomContent, room);
+                break;
+            case 4:
+                loadRoom4(roomContent, room);
+                break;
+            case 5:
+                loadRoom5(roomContent, room);
+                break;
+        }
+        
+        // Animate in
+        roomContainer.style.opacity = '1';
+        roomContainer.style.transform = 'translateY(0)';
+        roomContainer.style.transition = 'all 0.5s ease-out';
+    }, 200);
+}
+
+function updateProgressBar() {
+    const solvedRooms = Object.values(gameState.rooms).filter(r => r.solved).length;
+    const progress = (solvedRooms / 5) * 100;
     
-    switch(roomNumber) {
-        case 1:
-            loadRoom1(roomContent, room);
-            break;
-        case 2:
-            loadRoom2(roomContent, room);
-            break;
-        case 3:
-            loadRoom3(roomContent, room);
-            break;
-        case 4:
-            loadRoom4(roomContent, room);
-            break;
-        case 5:
-            loadRoom5(roomContent, room);
-            break;
+    let progressBar = document.getElementById('progress-bar');
+    if (!progressBar) {
+        const progressContainer = document.createElement('div');
+        progressContainer.className = 'progress-bar-container';
+        progressContainer.innerHTML = '<div id="progress-bar" class="progress-bar"></div>';
+        const roomHeader = document.querySelector('.room-header');
+        roomHeader.appendChild(progressContainer);
+        progressBar = document.getElementById('progress-bar');
     }
+    
+    progressBar.style.width = progress + '%';
 }
 
 // Room 1: The Cell - Box Puzzle
@@ -192,9 +225,12 @@ function checkRoom1Complete() {
         
         if (code === roomData[1].correctCode) {
             gameState.rooms[1].solved = true;
+            createParticleEffect(document.getElementById('puzzle-status'));
             document.getElementById('puzzle-status').innerHTML = 
                 '<div class="status-message">✓ Correct code! The door is open!</div>';
             document.getElementById('next-room-btn').classList.remove('hidden');
+            unlockAchievement('First Escape', 'You opened your first door!');
+            updateProgressBar();
         }
     }
 }
@@ -246,9 +282,12 @@ function handleButtonClick(btnId, btnElement, room) {
         } else if (sequence.length === correctSequence.length) {
             // Complete and correct
             gameState.rooms[2].solved = true;
+            createParticleEffect(document.getElementById('puzzle-status'));
             document.getElementById('puzzle-status').innerHTML = 
                 '<div class="status-message">✓ Power activated!</div>';
             document.getElementById('next-room-btn').classList.remove('hidden');
+            unlockAchievement('Power Master', 'You activated the control room!');
+            updateProgressBar();
         }
 }
 
@@ -342,8 +381,11 @@ function mixChemicals(room) {
     
     if (JSON.stringify(selected) === JSON.stringify(correct)) {
         gameState.rooms[3].solved = true;
+        createParticleEffect(resultDiv);
         resultDiv.innerHTML = '<div class="status-message">✓ Correct combination! The cabinet opens!</div>';
         document.getElementById('next-room-btn').classList.remove('hidden');
+        unlockAchievement('Chemist', 'You mixed the perfect combination!');
+        updateProgressBar();
     } else {
         resultDiv.innerHTML = '<div class="status-error">Wrong combination! Try again.</div>';
         // Reset selection
@@ -428,8 +470,11 @@ function checkCode4(code, room) {
     if (code === room.correctCode) {
         gameState.rooms[4].solved = true;
         gameState.rooms[4].countdown = 0; // Stop countdown
+        createParticleEffect(resultDiv);
         resultDiv.innerHTML = '<div class="status-message">✓ Correct code! Countdown stopped!</div>';
         document.getElementById('next-room-btn').classList.remove('hidden');
+        unlockAchievement('Time Master', 'You stopped the countdown in time!');
+        updateProgressBar();
     } else {
         resultDiv.innerHTML = '<div class="status-error">Wrong code! Try again.</div>';
         document.getElementById('code-input').value = '';
@@ -529,13 +574,140 @@ function showWinScreen() {
     const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     
     document.getElementById('escape-time').textContent = timeString;
+    
+    // Unlock final achievement
+    unlockAchievement('Escape Artist', 'You escaped from all rooms!');
+    
+    // Show achievements
+    const achievementsList = document.getElementById('achievements-list');
+    const achievementsCount = document.getElementById('achievements-count');
+    achievementsCount.textContent = gameState.achievements.length;
+    
+    achievementsList.innerHTML = '';
+    gameState.achievements.forEach(achievement => {
+        const badge = document.createElement('div');
+        badge.className = 'achievement-badge';
+        badge.textContent = `🏆 ${achievement}`;
+        achievementsList.appendChild(badge);
+    });
+    
+    // Create confetti effect
+    createConfetti();
+    
     showScreen('win-screen');
+}
+
+function createConfetti() {
+    const confettiContainer = document.createElement('div');
+    confettiContainer.className = 'confetti-container';
+    document.body.appendChild(confettiContainer);
+    
+    const colors = ['#ff6b6b', '#2ecc71', '#3498db', '#f39c12', '#9b59b6'];
+    const confettiCount = 100;
+    
+    for (let i = 0; i < confettiCount; i++) {
+        setTimeout(() => {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * 100 + '%';
+            confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            confetti.style.animationDelay = Math.random() * 0.5 + 's';
+            confetti.style.width = (Math.random() * 10 + 5) + 'px';
+            confetti.style.height = (Math.random() * 10 + 5) + 'px';
+            confettiContainer.appendChild(confetti);
+            
+            setTimeout(() => {
+                confetti.remove();
+            }, 5000);
+        }, i * 20);
+    }
+    
+    setTimeout(() => {
+        confettiContainer.remove();
+    }, 6000);
+}
+
+function createParticleEffect(element) {
+    const rect = element.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    const colors = ['#2ecc71', '#ff6b6b', '#3498db', '#f39c12'];
+    
+    for (let i = 0; i < 20; i++) {
+        const particle = document.createElement('div');
+        particle.style.position = 'fixed';
+        particle.style.left = centerX + 'px';
+        particle.style.top = centerY + 'px';
+        particle.style.width = '6px';
+        particle.style.height = '6px';
+        particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+        particle.style.borderRadius = '50%';
+        particle.style.pointerEvents = 'none';
+        particle.style.zIndex = '9999';
+        
+        const angle = (Math.PI * 2 * i) / 20;
+        const velocity = Math.random() * 100 + 50;
+        const vx = Math.cos(angle) * velocity;
+        const vy = Math.sin(angle) * velocity;
+        
+        document.body.appendChild(particle);
+        
+        let x = centerX;
+        let y = centerY;
+        let opacity = 1;
+        
+        const animate = () => {
+            x += vx * 0.02;
+            y += vy * 0.02;
+            opacity -= 0.02;
+            
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+            particle.style.opacity = opacity;
+            
+            if (opacity > 0) {
+                requestAnimationFrame(animate);
+            } else {
+                particle.remove();
+            }
+        };
+        
+        requestAnimationFrame(animate);
+    }
+}
+
+function unlockAchievement(name, description) {
+    if (gameState.achievements.includes(name)) {
+        return; // Already unlocked
+    }
+    
+    gameState.achievements.push(name);
+    
+    const achievementDiv = document.createElement('div');
+    achievementDiv.className = 'achievement-badge';
+    achievementDiv.innerHTML = `🏆 ${name}`;
+    achievementDiv.style.position = 'fixed';
+    achievementDiv.style.top = '20px';
+    achievementDiv.style.right = '20px';
+    achievementDiv.style.zIndex = '10000';
+    
+    document.body.appendChild(achievementDiv);
+    
+    setTimeout(() => {
+        achievementDiv.style.animation = 'fadeOut 0.5s ease-out forwards';
+        setTimeout(() => {
+            achievementDiv.remove();
+        }, 500);
+    }, 3000);
 }
 
 function restartGame() {
     // Reset game state
     gameState.currentRoom = 1;
     gameState.startTime = null;
+    gameState.achievements = [];
     gameState.rooms = {
         1: { solved: false, openedBoxes: [] },
         2: { solved: false, sequence: [], correctSequence: [1, 4, 2, 3] },
@@ -543,6 +715,12 @@ function restartGame() {
         4: { solved: false, countdown: 60, code: '', correctCode: '7359' },
         5: { solved: false, foundDigits: [], correctCode: [7, 1, 3, 3, 5] }
     };
+    
+    // Remove progress bar if exists
+    const progressContainer = document.querySelector('.progress-bar-container');
+    if (progressContainer) {
+        progressContainer.remove();
+    }
     
     showScreen('start-screen');
 }

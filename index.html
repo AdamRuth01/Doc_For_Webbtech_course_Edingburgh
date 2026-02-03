@@ -14,6 +14,12 @@
                 <h1>🔒 ESCAPE ROOM 🔒</h1>
                 <p class="subtitle">You wake up trapped in an abandoned complex...</p>
                 <p class="description">Solve puzzles in 5 rooms to escape!</p>
+                <div class="feature-list">
+                    <p>✨ 5 Unique Puzzle Rooms</p>
+                    <p>⏱️ Time Challenges</p>
+                    <p>🏆 Achievement System</p>
+                    <p>🎯 Progressive Difficulty</p>
+                </div>
                 <button id="start-btn" class="btn-primary">Start Game</button>
             </div>
         </div>
@@ -22,9 +28,11 @@
         <div id="room-container" class="screen">
             <!-- Room Header -->
             <div class="room-header">
-                <h2 id="room-title">Room 1: The Cell</h2>
-                <div class="room-progress">
-                    <span>Room <span id="current-room">1</span> of 5</span>
+                <div>
+                    <h2 id="room-title">Room 1: The Cell</h2>
+                    <div class="room-progress">
+                        <span>Room <span id="current-room">1</span> of 5</span>
+                    </div>
                 </div>
             </div>
 
@@ -53,7 +61,9 @@
             <div class="win-content">
                 <h1>🎉 CONGRATULATIONS! 🎉</h1>
                 <p>You have successfully escaped from the complex!</p>
-                <p class="escape-time">Time: <span id="escape-time">00:00</span></p>
+                <p class="escape-time">⏱️ Escape Time: <span id="escape-time">00:00</span></p>
+                <p class="achievements-summary">🏆 Achievements Unlocked: <span id="achievements-count">0</span></p>
+                <div id="achievements-list" class="achievements-list"></div>
                 <button id="play-again-btn" class="btn-primary">Play Again</button>
             </div>
         </div>

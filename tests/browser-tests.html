@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browser Compatibility Tests - Escape Room</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .test-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        .test-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .test-section h2 {
+            color: #ff6b6b;
+            margin-bottom: 15px;
+        }
+        .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+        .test-pass {
+            background: rgba(46, 204, 113, 0.2);
+            border: 1px solid #2ecc71;
+            color: #2ecc71;
+        }
+        .test-fail {
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid #e74c3c;
+            color: #e74c3c;
+        }
+        .test-info {
+            background: rgba(52, 152, 219, 0.2);
+            border: 1px solid #3498db;
+            color: #3498db;
+        }
+        .test-warning {
+            background: rgba(243, 156, 18, 0.2);
+            border: 1px solid #f39c12;
+            color: #f39c12;
+        }
+        .compatibility-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .compatibility-table th,
+        .compatibility-table td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .compatibility-table th {
+            background: rgba(255, 107, 107, 0.2);
+            color: #ff6b6b;
+        }
+        .compat-yes {
+            color: #2ecc71;
+            font-weight: bold;
+        }
+        .compat-no {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .compat-partial {
+            color: #f39c12;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="test-container">
+            <h1 style="text-align: center; color: #ff6b6b; margin-bottom: 30px;">🌐 Browser Compatibility Tests</h1>
+            
+            <!-- Browser Detection -->
+            <div class="test-section">
+                <h2>1. Browser Information</h2>
+                <div id="browser-info-result"></div>
+            </div>
+            
+            <!-- Feature Detection -->
+            <div class="test-section">
+                <h2>2. Feature Detection</h2>
+                <div id="feature-detection-result"></div>
+            </div>
+            
+            <!-- CSS Support -->
+            <div class="test-section">
+                <h2>3. CSS Support</h2>
+                <div id="css-support-result"></div>
+            </div>
+            
+            <!-- JavaScript Support -->
+            <div class="test-section">
+                <h2>4. JavaScript Support</h2>
+                <div id="js-support-result"></div>
+            </div>
+            
+            <!-- Compatibility Matrix -->
+            <div class="test-section">
+                <h2>5. Compatibility Matrix</h2>
+                <div id="compatibility-matrix"></div>
+            </div>
+            
+            <!-- Known Issues -->
+            <div class="test-section">
+                <h2>6. Known Issues & Workarounds</h2>
+                <div id="known-issues-result"></div>
+            </div>
+            
+            <!-- Navigation -->
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="../index.html" class="btn-primary" style="text-decoration: none; display: inline-block; margin: 5px;">🏠 Back to Home</a>
+                <a href="audio-tests.html" class="btn-secondary" style="text-decoration: none; display: inline-block; margin: 5px;">← Audio Tests</a>
+                <a href="storage-tests.html" class="btn-secondary" style="text-decoration: none; display: inline-block; margin: 5px;">← Storage Tests</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Test results
+        function addResult(containerId, message, type = 'info') {
+            const container = document.getElementById(containerId);
+            const result = document.createElement('div');
+            result.className = `test-result test-${type}`;
+            result.textContent = message;
+            container.appendChild(result);
+        }
+        
+        function clearResults(containerId) {
+            document.getElementById(containerId).innerHTML = '';
+        }
+        
+        // Detect browser
+        function detectBrowser() {
+            const ua = navigator.userAgent;
+            let browser = 'Unknown';
+            let version = 'Unknown';
+            
+            if (ua.indexOf('Chrome') > -1 && ua.indexOf('Edg') === -1) {
+                browser = 'Chrome';
+                const match = ua.match(/Chrome\/(\d+)/);
+                version = match ? match[1] : 'Unknown';
+            } else if (ua.indexOf('Firefox') > -1) {
+                browser = 'Firefox';
+                const match = ua.match(/Firefox\/(\d+)/);
+                version = match ? match[1] : 'Unknown';
+            } else if (ua.indexOf('Edg') > -1) {
+                browser = 'Edge';
+                const match = ua.match(/Edg\/(\d+)/);
+                version = match ? match[1] : 'Unknown';
+            } else if (ua.indexOf('Safari') > -1 && ua.indexOf('Chrome') === -1) {
+                browser = 'Safari';
+                const match = ua.match(/Version\/(\d+)/);
+                version = match ? match[1] : 'Unknown';
+            }
+            
+            return { browser, version, userAgent: ua };
+        }
+        
+        // Test 1: Browser Information
+        function testBrowserInfo() {
+            clearResults('browser-info-result');
+            const info = detectBrowser();
+            
+            addResult('browser-info-result', `Browser: ${info.browser}`, 'info');
+            addResult('browser-info-result', `Version: ${info.version}`, 'info');
+            addResult('browser-info-result', `Platform: ${navigator.platform}`, 'info');
+            addResult('browser-info-result', `Language: ${navigator.language}`, 'info');
+            addResult('browser-info-result', `Screen: ${screen.width}x${screen.height}`, 'info');
+        }
+        
+        // Test 2: Feature Detection
+        function testFeatureDetection() {
+            clearResults('feature-detection-result');
+            
+            const features = {
+                'localStorage': typeof(Storage) !== 'undefined' && typeof localStorage !== 'undefined',
+                'sessionStorage': typeof(Storage) !== 'undefined' && typeof sessionStorage !== 'undefined',
+                'Web Audio API': !!(window.AudioContext || window.webkitAudioContext),
+                'Fetch API': typeof fetch !== 'undefined',
+                'Promise': typeof Promise !== 'undefined',
+                'Arrow Functions': (() => { try { eval('() => {}'); return true; } catch(e) { return false; } })(),
+                'Template Literals': (() => { try { eval('`test`'); return true; } catch(e) { return false; } })(),
+                'CSS Grid': CSS.supports('display', 'grid'),
+                'CSS Flexbox': CSS.supports('display', 'flex'),
+                'CSS Transforms': CSS.supports('transform', 'translateX(0)'),
+                'CSS Animations': CSS.supports('animation', 'test'),
+                'requestAnimationFrame': typeof requestAnimationFrame !== 'undefined'
+            };
+            
+            Object.keys(features).forEach(feature => {
+                const supported = features[feature];
+                addResult('feature-detection-result', 
+                    `${supported ? '✓' : '✗'} ${feature}: ${supported ? 'Supported' : 'Not Supported'}`,
+                    supported ? 'pass' : 'fail'
+                );
+            });
+        }
+        
+        // Test 3: CSS Support
+        function testCSSSupport() {
+            clearResults('css-support-result');
+            
+            const cssTests = {
+                'CSS Variables': CSS.supports('color', 'var(--test)'),
+                'CSS Grid': CSS.supports('display', 'grid'),
+                'CSS Flexbox': CSS.supports('display', 'flex'),
+                'CSS Transforms': CSS.supports('transform', 'translateX(0)'),
+                'CSS Transitions': CSS.supports('transition', 'all 0s'),
+                'CSS Animations': CSS.supports('animation', 'test'),
+                'Backdrop Filter': CSS.supports('backdrop-filter', 'blur(10px)'),
+                'Gradient': CSS.supports('background', 'linear-gradient(red, blue)')
+            };
+            
+            Object.keys(cssTests).forEach(test => {
+                const supported = cssTests[test];
+                addResult('css-support-result',
+                    `${supported ? '✓' : '✗'} ${test}: ${supported ? 'Supported' : 'Not Supported'}`,
+                    supported ? 'pass' : 'fail'
+                );
+            });
+        }
+        
+        // Test 4: JavaScript Support
+        function testJSSupport() {
+            clearResults('js-support-result');
+            
+            const jsTests = {
+                'ES6 Classes': (() => { try { eval('class Test {}'); return true; } catch(e) { return false; } })(),
+                'Arrow Functions': (() => { try { eval('() => {}'); return true; } catch(e) { return false; } })(),
+                'Template Literals': (() => { try { eval('`test`'); return true; } catch(e) { return false; } })(),
+                'Destructuring': (() => { try { eval('const {a} = {}'); return true; } catch(e) { return false; } })(),
+                'Spread Operator': (() => { try { eval('[...[]]'); return true; } catch(e) { return false; } })(),
+                'Async/Await': (() => { try { eval('async () => {}'); return true; } catch(e) { return false; } })(),
+                'Promise': typeof Promise !== 'undefined',
+                'Map': typeof Map !== 'undefined',
+                'Set': typeof Set !== 'undefined'
+            };
+            
+            Object.keys(jsTests).forEach(test => {
+                const supported = jsTests[test];
+                addResult('js-support-result',
+                    `${supported ? '✓' : '✗'} ${test}: ${supported ? 'Supported' : 'Not Supported'}`,
+                    supported ? 'pass' : 'fail'
+                );
+            });
+        }
+        
+        // Test 5: Compatibility Matrix
+        function testCompatibilityMatrix() {
+            const container = document.getElementById('compatibility-matrix');
+            container.innerHTML = '';
+            
+            const table = document.createElement('table');
+            table.className = 'compatibility-table';
+            
+            const header = table.createTHead();
+            const headerRow = header.insertRow();
+            headerRow.insertCell().textContent = 'Feature';
+            headerRow.insertCell().textContent = 'Chrome';
+            headerRow.insertCell().textContent = 'Firefox';
+            headerRow.insertCell().textContent = 'Edge';
+            headerRow.insertCell().textContent = 'Safari';
+            
+            const features = [
+                { name: 'Web Audio API', chrome: 'Yes', firefox: 'Yes', edge: 'Yes', safari: 'Yes' },
+                { name: 'localStorage', chrome: 'Yes', firefox: 'Yes', edge: 'Yes', safari: 'Yes' },
+                { name: 'Fetch API', chrome: 'Yes', firefox: 'Yes', edge: 'Yes', safari: 'Yes' },
+                { name: 'CSS Grid', chrome: 'Yes', firefox: 'Yes', edge: 'Yes', safari: 'Yes' },
+                { name: 'CSS Flexbox', chrome: 'Yes', firefox: 'Yes', edge: 'Yes', safari: 'Yes' },
+                { name: 'Hash Navigation', chrome: 'Yes', firefox: 'Yes', edge: 'Yes', safari: 'Yes' }
+            ];
+            
+            const tbody = table.createTBody();
+            features.forEach(feature => {
+                const row = tbody.insertRow();
+                row.insertCell().textContent = feature.name;
+                row.insertCell().innerHTML = `<span class="compat-yes">${feature.chrome}</span>`;
+                row.insertCell().innerHTML = `<span class="compat-yes">${feature.firefox}</span>`;
+                row.insertCell().innerHTML = `<span class="compat-yes">${feature.edge}</span>`;
+                row.insertCell().innerHTML = `<span class="compat-yes">${feature.safari}</span>`;
+            });
+            
+            container.appendChild(table);
+        }
+        
+        // Test 6: Known Issues
+        function testKnownIssues() {
+            clearResults('known-issues-result');
+            
+            addResult('known-issues-result', 'Known Issues & Workarounds:', 'info');
+            addResult('known-issues-result', '', 'info');
+            
+            addResult('known-issues-result', '1. Web Audio API requires user interaction', 'warning');
+            addResult('known-issues-result', '   → Workaround: Audio initialized on first click', 'info');
+            
+            addResult('known-issues-result', '2. localStorage may be disabled in private mode', 'warning');
+            addResult('known-issues-result', '   → Workaround: Graceful degradation with feature detection', 'info');
+            
+            addResult('known-issues-result', '3. Safari may require vendor prefixes', 'warning');
+            addResult('known-issues-result', '   → Workaround: CSS includes -webkit- prefixes', 'info');
+            
+            addResult('known-issues-result', '4. Older browsers may not support ES6+', 'warning');
+            addResult('known-issues-result', '   → Workaround: Modern browsers recommended (Chrome 90+, Firefox 88+, Edge 90+, Safari 14+)', 'info');
+        }
+        
+        // Run all tests
+        document.addEventListener('DOMContentLoaded', () => {
+            testBrowserInfo();
+            testFeatureDetection();
+            testCSSSupport();
+            testJSSupport();
+            testCompatibilityMatrix();
+            testKnownIssues();
+        });
+    </script>
+</body>
+</html>

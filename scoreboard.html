@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scoreboard - Escape Room</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .scoreboard-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        .scoreboard-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .scoreboard-header h1 {
+            color: #ff6b6b;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .scoreboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .stat-card h3 {
+            color: #a0a0a0;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        .stat-card .stat-value {
+            color: #ff6b6b;
+            font-size: 2em;
+            font-weight: bold;
+        }
+        #scoreboard-list {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .scoreboard-item {
+            display: grid;
+            grid-template-columns: 80px 1fr 100px 120px;
+            gap: 15px;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            align-items: center;
+        }
+        .scoreboard-item.top-score {
+            background: rgba(255, 215, 0, 0.1);
+            border-color: #ffd700;
+        }
+        .score-rank {
+            font-weight: bold;
+            color: #ff6b6b;
+            font-size: 1.2em;
+        }
+        .score-time {
+            color: #2ecc71;
+            font-size: 1.3em;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+        .score-rooms {
+            color: #3498db;
+            text-align: center;
+        }
+        .score-date {
+            color: #a0a0a0;
+            font-size: 0.9em;
+            text-align: right;
+        }
+        @media (max-width: 768px) {
+            .scoreboard-item {
+                grid-template-columns: 1fr;
+                gap: 5px;
+                text-align: center;
+            }
+            .score-date {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="scoreboard-container">
+            <div class="scoreboard-header">
+                <h1>🏆 Scoreboard</h1>
+                <p style="color: #a0a0a0;">Top escape times</p>
+            </div>
+            
+            <!-- Statistics -->
+            <div class="scoreboard-stats">
+                <div class="stat-card">
+                    <h3>Total Games</h3>
+                    <div class="stat-value" id="total-games">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Best Time</h3>
+                    <div class="stat-value" id="best-time">--:--</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Average Time</h3>
+                    <div class="stat-value" id="average-time">--:--</div>
+                </div>
+            </div>
+            
+            <!-- Scoreboard List -->
+            <div id="scoreboard-list">
+                <div style="text-align: center; color: #a0a0a0; padding: 20px;">
+                    Loading scores...
+                </div>
+            </div>
+            
+            <!-- Navigation -->
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="index.html" class="btn-primary" style="text-decoration: none; display: inline-block; margin: 5px;">🏠 Back to Home</a>
+                <a href="settings.html" class="btn-secondary" style="text-decoration: none; display: inline-block; margin: 5px;">⚙️ Settings</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Load scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/scoreboard.js"></script>
+    <script>
+        // Update statistics
+        document.addEventListener('DOMContentLoaded', () => {
+            const scores = StorageManager.getScoreboard();
+            const totalGames = document.getElementById('total-games');
+            const bestTime = document.getElementById('best-time');
+            const averageTime = document.getElementById('average-time');
+            
+            if (totalGames) {
+                totalGames.textContent = scores.length;
+            }
+            
+            const best = ScoreboardManager.getBestTime();
+            if (bestTime && best) {
+                bestTime.textContent = ScoreboardManager.formatTime(best.time);
+            }
+            
+            const avg = ScoreboardManager.getAverageTime();
+            if (averageTime && avg) {
+                averageTime.textContent = ScoreboardManager.formatTime(avg);
+            }
+        });
+    </script>
+</body>
+</html>

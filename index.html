@@ -21,6 +21,10 @@
                     <p>🎯 Progressive Difficulty</p>
                 </div>
                 <button id="start-btn" class="btn-primary">Start Game</button>
+                <div class="nav-links" style="margin-top: 20px;">
+                    <a href="settings.html" class="btn-secondary" style="text-decoration: none; display: inline-block; margin: 5px;">⚙️ Settings</a>
+                    <a href="scoreboard.html" class="btn-secondary" style="text-decoration: none; display: inline-block; margin: 5px;">🏆 Scoreboard</a>
+                </div>
             </div>
         </div>
 
@@ -52,8 +56,13 @@
             <!-- Next Room Button (hidden until puzzle solved) -->
             <button id="next-room-btn" class="btn-primary hidden">Go to Next Room →</button>
 
-            <!-- Back to Start -->
-            <button id="restart-btn" class="btn-secondary">Restart</button>
+            <!-- Navigation Links -->
+            <div class="room-navigation" style="margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+                <button id="restart-btn" class="btn-secondary">Restart</button>
+                <a href="index.html" class="btn-secondary" style="text-decoration: none; display: inline-block;">🏠 Home</a>
+                <a href="settings.html" class="btn-secondary" style="text-decoration: none; display: inline-block;">⚙️ Settings</a>
+                <a href="scoreboard.html" class="btn-secondary" style="text-decoration: none; display: inline-block;">🏆 Scoreboard</a>
+            </div>
         </div>
 
         <!-- Win Screen -->
@@ -64,11 +73,19 @@
                 <p class="escape-time">⏱️ Escape Time: <span id="escape-time">00:00</span></p>
                 <p class="achievements-summary">🏆 Achievements Unlocked: <span id="achievements-count">0</span></p>
                 <div id="achievements-list" class="achievements-list"></div>
-                <button id="play-again-btn" class="btn-primary">Play Again</button>
+                <div style="margin-top: 20px;">
+                    <button id="play-again-btn" class="btn-primary">Play Again</button>
+                    <a href="scoreboard.html" class="btn-secondary" style="text-decoration: none; display: inline-block; margin-left: 10px;">🏆 View Scoreboard</a>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Load utility scripts first -->
+    <script src="js/storage.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/quote-api.js"></script>
+    <!-- Load main game script last -->
     <script src="js/main.js"></script>
 </body>
 </html>

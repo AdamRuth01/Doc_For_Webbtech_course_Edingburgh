@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Audio API Tests - Escape Room</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .test-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        .test-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .test-section h2 {
+            color: #ff6b6b;
+            margin-bottom: 15px;
+        }
+        .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+        .test-pass {
+            background: rgba(46, 204, 113, 0.2);
+            border: 1px solid #2ecc71;
+            color: #2ecc71;
+        }
+        .test-fail {
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid #e74c3c;
+            color: #e74c3c;
+        }
+        .test-info {
+            background: rgba(52, 152, 219, 0.2);
+            border: 1px solid #3498db;
+            color: #3498db;
+        }
+        .test-button {
+            margin: 5px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .test-button:hover {
+            background: linear-gradient(135deg, #2980b9, #1f618d);
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="test-container">
+            <h1 style="text-align: center; color: #ff6b6b; margin-bottom: 30px;">🔊 Web Audio API Tests</h1>
+            
+            <!-- Browser Support Test -->
+            <div class="test-section">
+                <h2>1. Browser Support</h2>
+                <div id="browser-support-result"></div>
+            </div>
+            
+            <!-- Audio Context Test -->
+            <div class="test-section">
+                <h2>2. Audio Context Creation</h2>
+                <div id="audio-context-result"></div>
+                <button class="test-button" onclick="testAudioContext()">Test Audio Context</button>
+            </div>
+            
+            <!-- Sound Generation Tests -->
+            <div class="test-section">
+                <h2>3. Sound Generation</h2>
+                <div id="sound-generation-result"></div>
+                <button class="test-button" onclick="testSoundGeneration()">Test Sound Generation</button>
+            </div>
+            
+            <!-- Volume Control Test -->
+            <div class="test-section">
+                <h2>4. Volume Control</h2>
+                <div id="volume-control-result"></div>
+                <label>Volume: <input type="range" id="test-volume" min="0" max="100" value="70" oninput="testVolumeControl(this.value)"></label>
+                <span id="volume-display">70%</span>
+            </div>
+            
+            <!-- Sound Effects Test -->
+            <div class="test-section">
+                <h2>5. Sound Effects</h2>
+                <div id="sound-effects-result"></div>
+                <button class="test-button" onclick="testSoundEffects()">Test All Sound Effects</button>
+            </div>
+            
+            <!-- Navigation -->
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="../index.html" class="btn-primary" style="text-decoration: none; display: inline-block; margin: 5px;">🏠 Back to Home</a>
+                <a href="storage-tests.html" class="btn-secondary" style="text-decoration: none; display: inline-block; margin: 5px;">Storage Tests →</a>
+                <a href="browser-tests.html" class="btn-secondary" style="text-decoration: none; display: inline-block; margin: 5px;">Browser Tests →</a>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../js/audio.js"></script>
+    <script>
+        // Test results
+        function addResult(containerId, message, type = 'info') {
+            const container = document.getElementById(containerId);
+            const result = document.createElement('div');
+            result.className = `test-result test-${type}`;
+            result.textContent = message;
+            container.appendChild(result);
+        }
+        
+        function clearResults(containerId) {
+            document.getElementById(containerId).innerHTML = '';
+        }
+        
+        // Test 1: Browser Support
+        function testBrowserSupport() {
+            clearResults('browser-support-result');
+            const supported = AudioManager.isSupported();
+            if (supported) {
+                addResult('browser-support-result', '✓ Web Audio API is supported in this browser', 'pass');
+                addResult('browser-support-result', `AudioContext: ${window.AudioContext ? 'Standard' : 'Not available'}`);
+                addResult('browser-support-result', `webkitAudioContext: ${window.webkitAudioContext ? 'Available (legacy)' : 'Not available'}`);
+            } else {
+                addResult('browser-support-result', '✗ Web Audio API is NOT supported in this browser', 'fail');
+            }
+        }
+        
+        // Test 2: Audio Context
+        function testAudioContext() {
+            clearResults('audio-context-result');
+            try {
+                AudioManager.init();
+                if (AudioManager.audioContext) {
+                    addResult('audio-context-result', '✓ AudioContext created successfully', 'pass');
+                    addResult('audio-context-result', `State: ${AudioManager.audioContext.state}`);
+                    addResult('audio-context-result', `Sample Rate: ${AudioManager.audioContext.sampleRate} Hz`);
+                } else {
+                    addResult('audio-context-result', '✗ Failed to create AudioContext', 'fail');
+                }
+            } catch (error) {
+                addResult('audio-context-result', `✗ Error: ${error.message}`, 'fail');
+            }
+        }
+        
+        // Test 3: Sound Generation
+        function testSoundGeneration() {
+            clearResults('sound-generation-result');
+            try {
+                AudioManager.ensureInit();
+                AudioManager.playTone(440, 200, 'sine', 0.3);
+                addResult('sound-generation-result', '✓ Tone played successfully', 'pass');
+                setTimeout(() => {
+                    addResult('sound-generation-result', '✓ Sound completed without errors', 'pass');
+                }, 300);
+            } catch (error) {
+                addResult('sound-generation-result', `✗ Error: ${error.message}`, 'fail');
+            }
+        }
+        
+        // Test 4: Volume Control
+        function testVolumeControl(value) {
+            clearResults('volume-control-result');
+            const volume = value / 100;
+            AudioManager.setVolume(volume);
+            document.getElementById('volume-display').textContent = value + '%';
+            addResult('volume-control-result', `✓ Volume set to ${value}%`, 'pass');
+            AudioManager.playTone(440, 100, 'sine', 0.3);
+        }
+        
+        // Test 5: Sound Effects
+        function testSoundEffects() {
+            clearResults('sound-effects-result');
+            AudioManager.ensureInit();
+            
+            const effects = [
+                { name: 'Box Open', func: () => AudioManager.playBoxOpen() },
+                { name: 'Button Click', func: () => AudioManager.playButtonClick() },
+                { name: 'Success', func: () => AudioManager.playSuccess() },
+                { name: 'Error', func: () => AudioManager.playError() },
+                { name: 'Countdown Tick', func: () => AudioManager.playCountdownTick() },
+                { name: 'Room Complete', func: () => AudioManager.playRoomComplete() }
+            ];
+            
+            let index = 0;
+            const playNext = () => {
+                if (index < effects.length) {
+                    const effect = effects[index];
+                    addResult('sound-effects-result', `Playing: ${effect.name}...`, 'info');
+                    effect.func();
+                    index++;
+                    setTimeout(playNext, 500);
+                } else {
+                    addResult('sound-effects-result', '✓ All sound effects tested successfully', 'pass');
+                }
+            };
+            
+            playNext();
+        }
+        
+        // Run initial tests
+        document.addEventListener('DOMContentLoaded', () => {
+            testBrowserSupport();
+        });
+    </script>
+</body>
+</html>

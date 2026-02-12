@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room 4: Machine Room - Escape Room</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Room Container -->
+        <div id="room-container" class="screen active">
+            <!-- Room Header -->
+            <div class="room-header">
+                <div>
+                    <h2 id="room-title">Room 4: Machine Room</h2>
+                    <div class="room-progress">
+                        <span>Room <span id="current-room">4</span> of 5</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Room Description -->
+            <div id="room-description" class="room-description">
+                <p>A countdown has started! Solve the riddle to stop it. Riddle: "The first digit is seven. The second is three (half of six). The third is five. The fourth is nine (three squared)."</p>
+            </div>
+
+            <!-- Room Content -->
+            <div id="room-content" class="room-content">
+                <!-- Content will be dynamically generated -->
+            </div>
+
+            <!-- Puzzle Status -->
+            <div id="puzzle-status" class="puzzle-status"></div>
+
+            <!-- Next Room Button (hidden until puzzle solved) -->
+            <button id="next-room-btn" class="btn-primary hidden">Go to Next Room →</button>
+
+            <!-- Navigation Links -->
+            <div class="room-navigation" style="margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+                <button id="restart-btn" class="btn-secondary">Restart</button>
+                <a href="index.html" class="btn-secondary" style="text-decoration: none; display: inline-block;">🏠 Home</a>
+                <a href="room3.html" class="btn-secondary" style="text-decoration: none; display: inline-block;">← Room 3</a>
+                <a href="room5.html" class="btn-secondary" style="text-decoration: none; display: inline-block;">Room 5 →</a>
+                <a href="settings.html" class="btn-secondary" style="text-decoration: none; display: inline-block;">⚙️ Settings</a>
+                <a href="scoreboard.html" class="btn-secondary" style="text-decoration: none; display: inline-block;">🏆 Scoreboard</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/quote-api.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Load room 4 on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof loadRoom !== 'undefined') {
+                loadRoom(4);
+            }
+        });
+    </script>
+</body>
+</html>

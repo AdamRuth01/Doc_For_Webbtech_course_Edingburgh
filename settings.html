@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Escape Room</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .settings-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        .settings-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .settings-section h2 {
+            color: #ff6b6b;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        .setting-item {
+            margin-bottom: 20px;
+        }
+        .setting-item label {
+            display: block;
+            margin-bottom: 8px;
+            color: #e0e0e0;
+            font-weight: bold;
+        }
+        .setting-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        .setting-item input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+        .setting-item select {
+            width: 100%;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #555;
+            border-radius: 8px;
+            color: white;
+            font-size: 1em;
+        }
+        .volume-display {
+            text-align: center;
+            color: #ff6b6b;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .danger-zone {
+            border-color: #e74c3c !important;
+        }
+        .danger-zone h2 {
+            color: #e74c3c;
+        }
+        .danger-button {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+        .danger-button:hover {
+            background: linear-gradient(135deg, #c0392b, #a93226);
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="settings-container">
+            <h1 style="text-align: center; color: #ff6b6b; margin-bottom: 30px;">⚙️ Settings</h1>
+            
+            <!-- Audio Settings -->
+            <div class="settings-section">
+                <h2>🔊 Audio Settings</h2>
+                
+                <div class="setting-item">
+                    <label for="sound-toggle">
+                        <input type="checkbox" id="sound-toggle"> Enable Sound Effects
+                    </label>
+                    <p style="color: #a0a0a0; font-size: 0.9em; margin-top: 5px;">
+                        Play sound effects for game actions
+                    </p>
+                </div>
+                
+                <div class="setting-item">
+                    <label for="volume-slider">Master Volume</label>
+                    <input type="range" id="volume-slider" min="0" max="100" value="70" step="1">
+                    <div class="volume-display" id="volume-value">70%</div>
+                </div>
+            </div>
+            
+            <!-- Graphics Settings -->
+            <div class="settings-section">
+                <h2>🎨 Graphics Settings</h2>
+                
+                <div class="setting-item">
+                    <label for="graphics-quality">Graphics Quality</label>
+                    <select id="graphics-quality">
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high" selected>High</option>
+                    </select>
+                    <p style="color: #a0a0a0; font-size: 0.9em; margin-top: 5px;">
+                        Adjust graphics quality for better performance
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Danger Zone -->
+            <div class="settings-section danger-zone">
+                <h2>⚠️ Danger Zone</h2>
+                
+                <div class="setting-item">
+                    <button id="reset-progress-btn" class="btn-primary danger-button" style="width: 100%; margin-bottom: 10px;">
+                        Reset Game Progress
+                    </button>
+                    <p style="color: #a0a0a0; font-size: 0.9em;">
+                        This will delete your saved game progress. You will need to start from the beginning.
+                    </p>
+                </div>
+                
+                <div class="setting-item">
+                    <button id="clear-scoreboard-btn" class="btn-primary danger-button" style="width: 100%; margin-bottom: 10px;">
+                        Clear Scoreboard
+                    </button>
+                    <p style="color: #a0a0a0; font-size: 0.9em;">
+                        This will delete all saved scores from the leaderboard.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Save Button -->
+            <div style="text-align: center; margin-top: 30px;">
+                <button id="save-settings-btn" class="btn-primary">💾 Save Settings</button>
+            </div>
+            
+            <!-- Navigation -->
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="index.html" class="btn-secondary" style="text-decoration: none; display: inline-block; margin: 5px;">🏠 Back to Home</a>
+                <a href="scoreboard.html" class="btn-secondary" style="text-decoration: none; display: inline-block; margin: 5px;">🏆 Scoreboard</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Load scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/settings.js"></script>
+</body>
+</html>

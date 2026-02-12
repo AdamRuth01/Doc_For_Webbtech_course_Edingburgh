@@ -861,6 +861,65 @@ body::before {
     box-shadow: 0 5px 20px rgba(255, 255, 255, 0.1);
 }
 
+/* Quote Display */
+.quote-display {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+    border-left: 4px solid #3498db;
+    text-align: center;
+}
+
+.quote-text {
+    font-size: 1.1em;
+    font-style: italic;
+    color: #e0e0e0;
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.quote-author {
+    font-size: 0.9em;
+    color: #a0a0a0;
+    margin-top: 10px;
+}
+
+/* Cross-browser compatibility - Vendor prefixes */
+@-webkit-keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@-moz-keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@-ms-keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Room Navigation Links */
+.room-navigation {
+    margin-top: 20px;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.room-navigation a {
+    text-decoration: none;
+    display: inline-block;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .game-container {

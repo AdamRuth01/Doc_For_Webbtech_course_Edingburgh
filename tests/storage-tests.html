@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Storage Tests - Escape Room</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .test-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        .test-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .test-section h2 {
+            color: #ff6b6b;
+            margin-bottom: 15px;
+        }
+        .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+        .test-pass {
+            background: rgba(46, 204, 113, 0.2);
+            border: 1px solid #2ecc71;
+            color: #2ecc71;
+        }
+        .test-fail {
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid #e74c3c;
+            color: #e74c3c;
+        }
+        .test-info {
+            background: rgba(52, 152, 219, 0.2);
+            border: 1px solid #3498db;
+            color: #3498db;
+        }
+        .test-button {
+            margin: 5px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .test-button:hover {
+            background: linear-gradient(135deg, #2980b9, #1f618d);
+        }
+        .data-display {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="test-container">
+            <h1 style="text-align: center; color: #ff6b6b; margin-bottom: 30px;">💾 Storage Tests</h1>
+            
+            <!-- localStorage Availability Test -->
+            <div class="test-section">
+                <h2>1. localStorage Availability</h2>
+                <div id="availability-result"></div>
+            </div>
+            
+            <!-- Settings Storage Test -->
+            <div class="test-section">
+                <h2>2. Settings Storage</h2>
+                <div id="settings-result"></div>
+                <button class="test-button" onclick="testSettingsStorage()">Test Settings Storage</button>
+            </div>
+            
+            <!-- Scoreboard Storage Test -->
+            <div class="test-section">
+                <h2>3. Scoreboard Storage</h2>
+                <div id="scoreboard-result"></div>
+                <button class="test-button" onclick="testScoreboardStorage()">Test Scoreboard Storage</button>
+            </div>
+            
+            <!-- Game Progress Storage Test -->
+            <div class="test-section">
+                <h2>4. Game Progress Storage</h2>
+                <div id="progress-result"></div>
+                <button class="test-button" onclick="testProgressStorage()">Test Progress Storage</button>
+            </div>
+            
+            <!-- Data Persistence Test -->
+            <div class="test-section">
+                <h2>5. Data Persistence</h2>
+                <div id="persistence-result"></div>
+                <button class="test-button" onclick="testPersistence()">Test Persistence (Reload Page)</button>
+            </div>
+            
+            <!-- Storage Limits Test -->
+            <div class="test-section">
+                <h2>6. Storage Limits</h2>
+                <div id="limits-result"></div>
+                <button class="test-button" onclick="testStorageLimits()">Test Storage Limits</button>
+            </div>
+            
+            <!-- Navigation -->
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="../index.html" class="btn-primary" style="text-decoration: none; display: inline-block; margin: 5px;">🏠 Back to Home</a>
+                <a href="audio-tests.html" class="btn-secondary" style="text-decoration: none; display: inline-block; margin: 5px;">← Audio Tests</a>
+                <a href="browser-tests.html" class="btn-secondary" style="text-decoration: none; display: inline-block; margin: 5px;">Browser Tests →</a>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../js/storage.js"></script>
+    <script>
+        // Test results
+        function addResult(containerId, message, type = 'info') {
+            const container = document.getElementById(containerId);
+            const result = document.createElement('div');
+            result.className = `test-result test-${type}`;
+            result.textContent = message;
+            container.appendChild(result);
+        }
+        
+        function addData(containerId, data) {
+            const container = document.getElementById(containerId);
+            const dataDiv = document.createElement('div');
+            dataDiv.className = 'data-display';
+            dataDiv.textContent = JSON.stringify(data, null, 2);
+            container.appendChild(dataDiv);
+        }
+        
+        function clearResults(containerId) {
+            document.getElementById(containerId).innerHTML = '';
+        }
+        
+        // Test 1: localStorage Availability
+        function testAvailability() {
+            clearResults('availability-result');
+            const available = StorageManager.isAvailable();
+            if (available) {
+                addResult('availability-result', '✓ localStorage is available', 'pass');
+            } else {
+                addResult('availability-result', '✗ localStorage is NOT available (Private browsing mode?)', 'fail');
+            }
+        }
+        
+        // Test 2: Settings Storage
+        function testSettingsStorage() {
+            clearResults('settings-result');
+            try {
+                const testSettings = {
+                    soundEnabled: true,
+                    volume: 0.8,
+                    graphicsQuality: 'high'
+                };
+                
+                StorageManager.saveSettings(testSettings);
+                const loaded = StorageManager.loadSettings();
+                
+                if (JSON.stringify(loaded) === JSON.stringify(testSettings)) {
+                    addResult('settings-result', '✓ Settings saved and loaded correctly', 'pass');
+                    addData('settings-result', loaded);
+                } else {
+                    addResult('settings-result', '✗ Settings mismatch', 'fail');
+                    addData('settings-result', { saved: testSettings, loaded: loaded });
+                }
+            } catch (error) {
+                addResult('settings-result', `✗ Error: ${error.message}`, 'fail');
+            }
+        }
+        
+        // Test 3: Scoreboard Storage
+        function testScoreboardStorage() {
+            clearResults('scoreboard-result');
+            try {
+                // Save test scores
+                StorageManager.saveScore(120, 5);
+                StorageManager.saveScore(180, 5);
+                StorageManager.saveScore(150, 5);
+                
+                const scores = StorageManager.getScoreboard();
+                
+                if (scores.length >= 3) {
+                    addResult('scoreboard-result', `✓ Scoreboard storage working (${scores.length} scores)`, 'pass');
+                    addData('scoreboard-result', scores);
+                } else {
+                    addResult('scoreboard-result', '✗ Scoreboard not saving correctly', 'fail');
+                }
+            } catch (error) {
+                addResult('scoreboard-result', `✗ Error: ${error.message}`, 'fail');
+            }
+        }
+        
+        // Test 4: Game Progress Storage
+        function testProgressStorage() {
+            clearResults('progress-result');
+            try {
+                const testProgress = {
+                    currentRoom: 3,
+                    startTime: Date.now(),
+                    achievements: ['First Escape'],
+                    roomsSolved: [1, 2],
+                    rooms: {
+                        1: { solved: true, openedBoxes: [1, 2, 3] },
+                        2: { solved: true, sequence: [1, 4, 2, 3] },
+                        3: { solved: false, selectedChemicals: [] }
+                    }
+                };
+                
+                // Create a mock gameState
+                const mockGameState = {
+                    currentRoom: testProgress.currentRoom,
+                    startTime: testProgress.startTime,
+                    achievements: testProgress.achievements,
+                    rooms: testProgress.rooms
+                };
+                
+                StorageManager.saveProgress(mockGameState);
+                const loaded = StorageManager.loadProgress();
+                
+                if (loaded && loaded.currentRoom === testProgress.currentRoom) {
+                    addResult('progress-result', '✓ Progress saved and loaded correctly', 'pass');
+                    addData('progress-result', loaded);
+                } else {
+                    addResult('progress-result', '✗ Progress mismatch', 'fail');
+                }
+            } catch (error) {
+                addResult('progress-result', `✗ Error: ${error.message}`, 'fail');
+            }
+        }
+        
+        // Test 5: Data Persistence
+        function testPersistence() {
+            clearResults('persistence-result');
+            try {
+                // Save test data
+                const testKey = 'escapeRoom_persistence_test';
+                const testData = { timestamp: Date.now(), test: true };
+                localStorage.setItem(testKey, JSON.stringify(testData));
+                
+                addResult('persistence-result', '✓ Test data saved. Reload the page to verify persistence.', 'info');
+                addResult('persistence-result', 'After reload, check if the data is still there.', 'info');
+                
+                // Check if data from previous test exists
+                const existing = localStorage.getItem(testKey);
+                if (existing) {
+                    const parsed = JSON.parse(existing);
+                    const age = Date.now() - parsed.timestamp;
+                    addResult('persistence-result', `✓ Found existing test data (${Math.round(age / 1000)}s old)`, 'pass');
+                }
+            } catch (error) {
+                addResult('persistence-result', `✗ Error: ${error.message}`, 'fail');
+            }
+        }
+        
+        // Test 6: Storage Limits
+        function testStorageLimits() {
+            clearResults('limits-result');
+            try {
+                // Estimate storage usage
+                let totalSize = 0;
+                for (let key in localStorage) {
+                    if (localStorage.hasOwnProperty(key)) {
+                        totalSize += localStorage[key].length + key.length;
+                    }
+                }
+                
+                const estimatedMB = (totalSize / 1024 / 1024).toFixed(2);
+                const limitMB = 5; // Typical localStorage limit is 5-10MB
+                
+                addResult('limits-result', `Current storage usage: ~${estimatedMB} MB`, 'info');
+                addResult('limits-result', `Typical limit: ${limitMB}-10 MB`, 'info');
+                
+                if (totalSize < limitMB * 1024 * 1024) {
+                    addResult('limits-result', '✓ Storage usage is within safe limits', 'pass');
+                } else {
+                    addResult('limits-result', '⚠ Storage usage is getting high', 'fail');
+                }
+            } catch (error) {
+                addResult('limits-result', `✗ Error: ${error.message}`, 'fail');
+            }
+        }
+        
+        // Run initial tests
+        document.addEventListener('DOMContentLoaded', () => {
+            testAvailability();
+        });
+    </script>
+</body>
+</html>
